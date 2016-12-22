@@ -76,7 +76,7 @@ typedef union {
     /**
 	 * @brief ESP_GATTC_REG_EVT
 	 */
-    struct gattc_reg_evt_param {		
+    struct gattc_reg_evt_param {
         esp_gatt_status_t status;		/*!< Operation status */
         esp_gatt_if_t gatt_if;			/*!< Gatt interface id, different application on gatt client different gatt_if */
         uint16_t app_id;				/*!< Application id which input in register API */
@@ -373,9 +373,9 @@ esp_err_t esp_ble_gattc_get_characteristic(uint16_t conn_id,
  *
  * @param[in]       conn_id: connection ID which identify the server.
  * @param[in]       srvc_id: the service ID of which the characteristic is belonged to.
- * @param[in]       char_id: Characteristic ID, if NULL find the first available
- *                  characteristic.
- * @param[in]       start_descr_id:  the start descriptor id
+ * @param[in]       char_id: Characteristic ID
+ * @param[in]       start_descr_id:  the start descriptor id, if NULL find the first available
+ *                                   descriptor.
  *
  * @return
  *                  - ESP_OK: success

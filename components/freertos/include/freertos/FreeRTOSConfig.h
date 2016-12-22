@@ -76,7 +76,7 @@
 /* ESP31 and ESP32 are dualcore processors. */
 #ifndef CONFIG_FREERTOS_UNICORE
 #define portNUM_PROCESSORS 2
-#else 
+#else
 #define portNUM_PROCESSORS 1
 #endif
 
@@ -147,7 +147,7 @@
  * memory.
  *
  * THESE PARAMETERS ARE DESCRIBED WITHIN THE 'CONFIGURATION' SECTION OF THE
- * FreeRTOS API DOCUMENTATION AVAILABLE ON THE FreeRTOS.org WEB SITE. 
+ * FreeRTOS API DOCUMENTATION AVAILABLE ON THE FreeRTOS.org WEB SITE.
  *----------------------------------------------------------*/
 
 #define configUSE_PREEMPTION			1
@@ -162,10 +162,13 @@
 
 /* This has impact on speed of search for highest priority */
 #ifdef SMALL_TEST
-#define configMAX_PRIORITIES			( 7 )
+#define configMAX_PRIORITIES            ( 12 )
 #else
-#define configMAX_PRIORITIES			( 25 )
+#define configMAX_PRIORITIES            ( 25 )
 #endif
+
+#define configSUPPORT_STATIC_ALLOCATION 1
+#define configSUPPORT_DYNAMIC_ALLOCATION 1
 
 /* Minimal stack size. This may need to be increased for your application */
 /* NOTE: The FreeRTOS demos may not work reliably with stack size < 4KB.  */
@@ -256,9 +259,9 @@
 /* Test FreeRTOS timers (with timer task) and more. */
 /* Some files don't compile if this flag is disabled */
 #define configUSE_TIMERS                    1
-#define configTIMER_TASK_PRIORITY           1
+#define configTIMER_TASK_PRIORITY           10
 #define configTIMER_QUEUE_LENGTH            10
-#define configTIMER_TASK_STACK_DEPTH        configMINIMAL_STACK_SIZE
+#define configTIMER_TASK_STACK_DEPTH        2048
 
 #define INCLUDE_xTimerPendFunctionCall      1
 #define INCLUDE_eTaskGetState               1
