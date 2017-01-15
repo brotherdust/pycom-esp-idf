@@ -195,3 +195,6 @@ void app_main()
     gattc_client_test();
 }
 
+void mp_thread_clean (void *tcb) {
+
+}

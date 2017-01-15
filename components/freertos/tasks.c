@@ -624,7 +624,7 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB, TaskFunction_t pxTaskCode
 
 /*
  * This routine tries to send an interrupt to another core if needed to make it execute a task
- * of higher priority. We try to figure out if needed first by inspecting the pxTCB of the 
+ * of higher priority. We try to figure out if needed first by inspecting the pxTCB of the
  * other CPU first. Specifically for Xtensa, we can do this because pxTCB is an atomic pointer. It
  * is possible that it is inaccurate because the other CPU just did a task switch, but in that case
  * at most a superfluous interrupt is generated.
@@ -1077,10 +1077,10 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB, TaskFunction_t pxTaskCode
 			if( xSchedulerRunning == pdFALSE )
 			{
 				/* Scheduler isn't running yet. We need to determine on which CPU to run this task. */
-				for ( i=0; i<portNUM_PROCESSORS; i++ ) 
+				for ( i=0; i<portNUM_PROCESSORS; i++ )
 				{
 					/* Can we schedule this task on core i? */
-					if (xCoreID == tskNO_AFFINITY || xCoreID == i) 
+					if (xCoreID == tskNO_AFFINITY || xCoreID == i)
 					{
 						/* Schedule if nothing is scheduled yet, or overwrite a task of lower prio. */
 						if ( pxCurrentTCB[i] == NULL || pxCurrentTCB[i]->uxPriority <= pxNewTCB->uxPriority )
@@ -1118,7 +1118,7 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB, TaskFunction_t pxTaskCode
 		/* Scheduler is running. If the created task is of a higher priority than an executing task
 	       then it should run now.
 		   ToDo: This only works for the current core. If a task is scheduled on an other processor,
-		   the other processor will keep running the task it's working on, and only switch to the newer 
+		   the other processor will keep running the task it's working on, and only switch to the newer
 		   task on a timer interrupt. */
 		//No mux here, uxPriority is mostly atomic and there's not really any harm if this check misfires.
 		if( pxCurrentTCB[ xPortGetCoreID() ]->uxPriority < pxNewTCB->uxPriority )
@@ -1571,7 +1571,7 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB, TaskFunction_t pxTaskCode
 						{
 							xYieldRequired = pdTRUE;
 						}
-						else if ( pxTCB->xCoreID != xPortGetCoreID() ) 
+						else if ( pxTCB->xCoreID != xPortGetCoreID() )
 						{
 							taskYIELD_OTHER_CORE( pxTCB->xCoreID, uxNewPriority );
 						}
@@ -2031,7 +2031,7 @@ void vTaskEndScheduler( void )
 
 
 #if ( configUSE_NEWLIB_REENTRANT == 1 )
-//Return global reent struct if FreeRTOS isn't running, 
+//Return global reent struct if FreeRTOS isn't running,
 struct _reent* __getreent() {
 	//No lock needed because if this changes, we won't be running anymore.
 	TCB_t *currTask=pxCurrentTCB[ xPortGetCoreID() ];
@@ -2357,7 +2357,7 @@ BaseType_t xSwitchRequired = pdFALSE;
 
 	/* Only let core 0 increase the tick count, to keep accurate track of time. */
 	/* ToDo: This doesn't really play nice with the logic below: it means when core 1 is
-	   running a low-priority task, it will keep running it until there is a context 
+	   running a low-priority task, it will keep running it until there is a context
 	   switch, even when this routine (running on core 0) unblocks a bunch of high-priority
 	   tasks... this is less than optimal -- JD. */
 	if ( xPortGetCoreID()!=0 ) {
@@ -2651,7 +2651,7 @@ BaseType_t xSwitchRequired = pdFALSE;
 void vTaskSwitchContext( void )
 {
 	tskTCB * pxTCB;
-	//This can be called both from IRQ as well as normal context, so we can't 
+	//This can be called both from IRQ as well as normal context, so we can't
 	//use taskENTER_CRITICAL() here. Instead, save the irq status and disable
 	//IRQs, so we can use taskENTER_CRITICAL_ISR and friends.
 	int irqstate=portENTER_CRITICAL_NESTED();
@@ -2702,15 +2702,15 @@ void vTaskSwitchContext( void )
 		/* Select a new task to run using either the generic C or port
 		optimised asm code. */
 		/* ToDo: either get rid of port-changable task switching stuff, or put all this inside the
-		   taskSELECT_HIGHEST_PRIORITY_TASK macro, then replace this all with a taskSELECT_HIGHEST_PRIORITY_TASK(); 
+		   taskSELECT_HIGHEST_PRIORITY_TASK macro, then replace this all with a taskSELECT_HIGHEST_PRIORITY_TASK();
 		   call */
-		
+
 		taskENTER_CRITICAL_ISR(&xTaskQueueMutex);
-		
+
 		unsigned portBASE_TYPE foundNonExecutingWaiter = pdFALSE, ableToSchedule = pdFALSE, resetListHead;
 		portBASE_TYPE uxDynamicTopReady = uxTopReadyPriority;
 		unsigned portBASE_TYPE holdTop=pdFALSE;
-		
+
 		/*
 		 *  ToDo: This scheduler doesn't correctly implement the round-robin scheduling as done in the single-core
 		 *  FreeRTOS stack when multiple tasks have the same priority and are all ready; it just keeps grabbing the
@@ -2718,21 +2718,21 @@ void vTaskSwitchContext( void )
 		 *  (Is this still true? if any, there's the issue with one core skipping over the processes for the other
 		 *  core, potentially not giving the skipped-over processes any time.)
 		 */
-		
+
 		while ( ableToSchedule == pdFALSE && uxDynamicTopReady >= 0 )
 		{
 			resetListHead = pdFALSE;
 			// Nothing to do for empty lists
 			if (!listLIST_IS_EMPTY( &( pxReadyTasksLists[ uxDynamicTopReady ] ) )) {
-				
+
 				ableToSchedule = pdFALSE;
 				tskTCB * pxRefTCB;
-				
+
 				/* Remember the current list item so that we
 				can detect if all items have been inspected.
 				Once this happens, we move on to a lower
 				priority list (assuming nothing is suitable
-				for scheduling). Note: This can return NULL if 
+				for scheduling). Note: This can return NULL if
 				the list index is at the listItem */
 				pxRefTCB = pxReadyTasksLists[ uxDynamicTopReady ].pxIndex->pvOwner;
 
@@ -2740,7 +2740,7 @@ void vTaskSwitchContext( void )
 					//pxIndex points to the list end marker. Skip that and just get the next item.
 					listGET_OWNER_OF_NEXT_ENTRY( pxRefTCB, &( pxReadyTasksLists[ uxDynamicTopReady ] ) );
 				}
-				
+
 				do {
 					listGET_OWNER_OF_NEXT_ENTRY( pxTCB, &( pxReadyTasksLists[ uxDynamicTopReady ] ) );
 					/* Find out if the next task in the list is
@@ -2756,7 +2756,7 @@ void vTaskSwitchContext( void )
 							break;
 						}
 					}
-					
+
 					if (foundNonExecutingWaiter == pdTRUE) {
 						/* If the task is not being executed
 						by another core and its affinity is
@@ -2775,7 +2775,7 @@ void vTaskSwitchContext( void )
 					} else {
 						ableToSchedule = pdFALSE;
 					}
-					
+
 					if (ableToSchedule == pdFALSE) {
 						resetListHead = pdTRUE;
 					} else if ((ableToSchedule == pdTRUE) && (resetListHead == pdTRUE)) {
@@ -3516,7 +3516,7 @@ static void prvCheckTasksWaitingTermination( void )
 					--uxTasksDeleted;
 				}
 				taskEXIT_CRITICAL(&xTaskQueueMutex);
-				
+
 				#if ( configNUM_THREAD_LOCAL_STORAGE_POINTERS > 0 ) && ( configTHREAD_LOCAL_STORAGE_DELETE_CALLBACKS )
 				{
 					int x;
@@ -3720,6 +3720,7 @@ BaseType_t xTaskGetAffinity( TaskHandle_t xTask )
 
 #if ( INCLUDE_vTaskDelete == 1 )
 
+extern void mp_thread_clean (void *tcb);
 
 	static void prvDeleteTCB( TCB_t *pxTCB )
 	{
@@ -3767,6 +3768,7 @@ BaseType_t xTaskGetAffinity( TaskHandle_t xTask )
 				nothing needs to be freed. */
 				configASSERT( pxTCB->ucStaticallyAllocated == tskSTATICALLY_ALLOCATED_STACK_AND_TCB	)
 				mtCOVERAGE_TEST_MARKER();
+                mp_thread_clean(pxTCB);
 			}
 		}
 		#endif /* configSUPPORT_DYNAMIC_ALLOCATION */
@@ -4056,7 +4058,7 @@ is not running.  Re-enabling the scheduler will re-enable the interrupts instead
 
 			/* DISABLED in the esp32 port - because of SMP, vTaskEnterCritical
 			has to be used in way more places than before, and some are called
-			both from ISR as well as non-ISR code, thus we re-organized 
+			both from ISR as well as non-ISR code, thus we re-organized
 			vTaskEnterCritical to also work in ISRs. */
 #if 0
 			if( pxCurrentTCB[ xPortGetCoreID() ]->uxCriticalNesting == 1 )
@@ -4113,7 +4115,7 @@ is not running.  Re-enabling the scheduler will re-enable the interrupts instead
 			mtCOVERAGE_TEST_MARKER();
 		}
 	}
-	
+
 #endif /* portCRITICAL_NESTING_IN_TCB */
 /*-----------------------------------------------------------*/
 
@@ -4862,7 +4864,7 @@ TickType_t uxReturn;
 					this task pending until the scheduler is resumed. */
 					vListInsertEnd( &( xPendingReadyList[ xPortGetCoreID() ] ), &( pxTCB->xEventListItem ) );
 				}
-				
+
 				if( tskCAN_RUN_HERE(pxTCB->xCoreID) && pxTCB->uxPriority > pxCurrentTCB[ xPortGetCoreID() ]->uxPriority )
 				{
 					/* The notified task has a priority above the currently

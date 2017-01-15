@@ -77,7 +77,7 @@ esp_err_t gpio_pullup_en(gpio_num_t gpio_num) {
     if(RTC_GPIO_IS_VALID_GPIO(gpio_num)){
         rtc_gpio_pullup_en(gpio_num);
     }else{
-         REG_SET_BIT(GPIO_PIN_MUX_REG[gpio_num], FUN_PU);
+        REG_SET_BIT(GPIO_PIN_MUX_REG[gpio_num], FUN_PU);
     }
     return ESP_OK;
 }
@@ -292,6 +292,7 @@ esp_err_t gpio_config(gpio_config_t *pGPIOConfig)
             }
             if ((pGPIOConfig->mode) & GPIO_MODE_DEF_OUTPUT) {
                 output_en = 1;
+                gpio_matrix_out(io_num, SIG_GPIO_OUT_IDX, 0, 0);
                 gpio_output_enable(io_num);
             } else {
                 gpio_output_disable(io_num);

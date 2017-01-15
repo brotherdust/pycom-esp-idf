@@ -87,9 +87,9 @@ PROVIDE ( _ctype_ = 0x3ff96354 );
 PROVIDE ( __ctype_ptr__ = 0x3ff96350 );
 PROVIDE ( __ctzdi2 = 0x4000ca64 );
 PROVIDE ( __ctzsi2 = 0x4000c7f0 );
-PROVIDE ( _data_end = 0x4000d5c8 );
+PROVIDE ( _data_end_rom = 0x4000d5c8 );
 PROVIDE ( _data_end_btdm_rom = 0x4000d4f8 );
-PROVIDE ( _data_start = 0x4000d4f8 );
+PROVIDE ( _data_start_rom = 0x4000d4f8 );
 PROVIDE ( _data_start_btdm_rom = 0x4000d4f4 );
 PROVIDE ( _data_start_btdm = 0x3ffae6e0);
 PROVIDE ( _data_end_btdm = 0x3ffaff10);
@@ -1725,8 +1725,8 @@ PROVIDE ( xthal_memcpy = 0x4000c0bc );
 PROVIDE ( xthal_set_ccompare = 0x4000c058 );
 PROVIDE ( xthal_set_intclear = 0x4000c1ec );
 PROVIDE ( _xtos_set_intlevel = 0x4000bfdc );
-/* 
-These functions are xtos-related (or call xtos-related functions) and do not play well 
+/*
+These functions are xtos-related (or call xtos-related functions) and do not play well
 with multicore FreeRTOS. Where needed, we provide alternatives that are multicore
 compatible.
 */
