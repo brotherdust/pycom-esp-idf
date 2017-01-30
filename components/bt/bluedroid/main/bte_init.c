@@ -79,7 +79,7 @@
 #include "bta_api.h"
 #include "bta_sys.h"
 
-#include "bta_ag_int.h"
+// #include "bta_ag_int.h"
 
 #if BTA_HS_INCLUDED == TRUE
 #include "bta_hs_int.h"
@@ -119,7 +119,7 @@ tBTA_JV_CB *bta_jv_cb_ptr = NULL;
 #include "bta_sys_int.h"
 
 // control block for patch ram downloading
-#include "bta_prm_int.h"
+// #include "bta_prm_int.h"
 
 #endif // BTA_INCLUDED
 
@@ -187,8 +187,8 @@ void BTE_InitStack(void)
     memset((void *)bta_dm_cb_ptr, 0, sizeof(tBTA_DM_CB));
     memset((void *)bta_dm_search_cb_ptr, 0, sizeof(tBTA_DM_SEARCH_CB));
     memset((void *)bta_dm_di_cb_ptr, 0, sizeof(tBTA_DM_DI_CB));
-    memset((void *)bta_prm_cb_ptr, 0, sizeof(tBTA_PRM_CB));
-    memset((void *)bta_ag_cb_ptr, 0, sizeof(tBTA_AG_CB));
+    // memset((void *)bta_prm_cb_ptr, 0, sizeof(tBTA_PRM_CB));
+    // memset((void *)bta_ag_cb_ptr, 0, sizeof(tBTA_AG_CB));
 #if BTA_HS_INCLUDED == TRUE
     memset((void *)bta_hs_cb_ptr, 0, sizeof(tBTA_HS_CB));
 #endif

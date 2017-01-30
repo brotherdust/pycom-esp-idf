@@ -23,6 +23,7 @@
 #include "nvs_flash.h"
 #include "bt.h"
 #include "bta_api.h"
+#include "driver/gpio.h"
 
 #include "esp_gap_ble_api.h"
 #include "esp_gatts_api.h"
@@ -127,7 +128,7 @@ static void gatts_event_handler(uint32_t event, void *param)
         rsp.attr_value.handle = p->read.handle;
         rsp.attr_value.len = 4;
         rsp.attr_value.value[0] = 0xde;
-        rsp.attr_value.value[1] = 0xed;
+        rsp.attr_value.value[1] = 0xad;
         rsp.attr_value.value[2] = 0xbe;
         rsp.attr_value.value[3] = 0xef;
         esp_ble_gatts_send_response(p->read.conn_id, p->read.trans_id,
@@ -204,6 +205,19 @@ void app_main()
 {
     esp_err_t ret;
 
+    // configure GPIO 16
+
+    gpio_config_t gpioconf = {.pin_bit_mask = 1ull << 16,
+                              .mode = GPIO_MODE_OUTPUT,
+                              .pull_up_en = GPIO_PULLUP_DISABLE,
+                              .pull_down_en = GPIO_PULLDOWN_DISABLE,
+                              .intr_type = GPIO_INTR_DISABLE};
+    gpio_config(&gpioconf);
+
+    // set the pin low
+
+    GPIO_REG_WRITE(GPIO_OUT_W1TC_REG, 1ull << 16);
+
     bt_controller_init();
     LOG_INFO("%s init bluetooth\n", __func__);
     ret = esp_init_bluetooth();
@@ -222,4 +236,8 @@ void app_main()
     esp_ble_gatts_app_register(GATTS_SERVICE_UUID_TEST);
 
     return;
+}
+
+void mp_thread_clean (void *tcb) {
+
 }

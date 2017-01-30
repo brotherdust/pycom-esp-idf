@@ -9,6 +9,7 @@ COMPONENT_ADD_INCLUDEDIRS :=	bluedroid/bta/include			\
 				bluedroid/gki/include			\
 				bluedroid/hci/include			\
 				bluedroid/osi/include			\
+				bluedroid/bta/dm				\
 				bluedroid/btc/core/include		\
 				bluedroid/btc/profile/esp/blufi/include		\
 				bluedroid/btc/profile/esp/include		\
@@ -28,7 +29,7 @@ COMPONENT_ADD_INCLUDEDIRS :=	bluedroid/bta/include			\
 				bluedroid/stack/include			\
 				bluedroid/api/include		\
 				bluedroid/include			\
-				include	
+				include
 
 LIBS := btdm_app
 

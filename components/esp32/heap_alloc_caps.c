@@ -190,7 +190,7 @@ void heap_alloc_caps_init() {
     disable_mem_region((void*)0x40078000, (void*)0x40080000); //CPU1 cache region
 
     // TODO: this region should be checked, since we don't need to knock out all region finally
-    disable_mem_region((void*)0x3ffe0000, (void*)0x3ffe8000); //knock out ROM data region
+    disable_mem_region((void*)0x3ffe0000, (void*)0x3ffe0200); //knock out ROM data region (originally 0x8000 in size)
 
 #if CONFIG_MEMMAP_BT
     disable_mem_region((void*)0x3ffb0000, (void*)0x3ffc0000); //knock out BT data region
